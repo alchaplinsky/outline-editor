@@ -19,20 +19,37 @@
       work correctly both with client-side routing and a non-root public URL.
       Learn how to configure a non-root public URL by running `npm run build`.
     -->
-    <title>React App</title>
+    <title>Outliner</title>
+    <script>
+      window.DOC = {
+        nodes: [{
+          type: 'text',
+          value: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ipsa nostrum quod pariatur ad exercitationem debitis porro dolore.',
+          nodes: [
+            {
+              type: 'text',
+              value: 'Nested node',
+              nodes: [
+                {
+                  type: 'text',
+                  value: 'One more level of nesting'
+                }
+              ]
+            }, {
+              type: 'text',
+              value: 'Second Level of nesting',
+              nodes: []
+            }
+          ]
+        }, {
+          type: 'text',
+          value: 'Sunt neque enim vero veniam   iure delectus, et nobis ipsa voluptatibus a? Ipsum.',
+          nodes: []
+        }]
+      }
+    </script>
   </head>
   <body>
-    <noscript>You need to enable JavaScript to run this app.</noscript>
     <div id="root"></div>
-    <!--
-      This HTML file is a template.
-      If you open it directly in the browser, you will see an empty page.
-
-      You can add webfonts, meta tags, or analytics to this file.
-      The build step will place the bundled scripts into the <body> tag.
-
-      To begin the development, run `npm start` or `yarn start`.
-      To create a production bundle, use `npm run build` or `yarn build`.
-    -->
   </body>
 </html>
