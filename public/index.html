@@ -22,29 +22,32 @@
     <title>Outliner</title>
     <script>
       window.DOC = {
-        nodes: [{
+        type: 'text',
+        value: 'Untitled Document',
+        children: [{
           type: 'text',
           value: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ipsa nostrum quod pariatur ad exercitationem debitis porro dolore.',
-          nodes: [
+          children: [
             {
               type: 'text',
               value: 'Nested node',
-              nodes: [
+              children: [
                 {
                   type: 'text',
-                  value: 'One more level of nesting'
+                  value: 'One more level of nesting',
+                  children: []
                 }
               ]
             }, {
               type: 'text',
               value: 'Second Level of nesting',
-              nodes: []
+              children: []
             }
           ]
         }, {
           type: 'text',
           value: 'Sunt neque enim vero veniam   iure delectus, et nobis ipsa voluptatibus a? Ipsum.',
-          nodes: []
+          children: []
         }]
       }
     </script>

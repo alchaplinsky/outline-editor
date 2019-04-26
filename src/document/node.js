@@ -8,6 +8,14 @@ export default class Node {
     })
   }
 
+  focus() {
+    let node = this.searchTree(this.getRoot(), 'focus', true)
+    if (node) {
+      node.focus = false
+    }
+    this.focus = true
+  }
+
   nest() {
     let index = this.getIndex()
     if (index !== 0) {
@@ -45,7 +53,33 @@ export default class Node {
     return this.parent.nodes.indexOf(this)
   }
 
+  getRoot() {
+    return this.getRootRecursive(this)
+  }
+
+  getRootRecursive(node) {
+    let parent = node.parent
+    if (parent === null) return node
+    return this.getRootRecursive(parent)
+  }
+
+  searchTree(node, key, value) {
+    if (node[key] === value) {
+      return node
+    }
+    if (node.nodes && node.nodes.length > 0) {
+      let result = null
+      node.nodes.forEach((n) => {
+        result = this.searchTree(n, key, value)
+      })
+      return result
+    }
+    return null
+  }
+
   create() {
-    return new Node('', 'text', [], this.parent)
+    let node = new Node('', 'text', [], this.parent)
+    node.focus()
+    return node
   }
 }
