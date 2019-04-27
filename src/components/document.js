@@ -6,7 +6,7 @@ export default function Document() {
   let rootNode = identify(window.DOC)
   return (
     <div className="document">
-      <Node node={rootNode} root />
+      <Node node={rootNode} />
     </div>
   );
 }

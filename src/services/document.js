@@ -3,12 +3,29 @@ import shortid from 'shortid'
 import { getRootNode, getTree, searchTree } from './tree'
 
 const createNode = () => {
-  return { id: shortid.generate(), type: 'text', value: '', children: [] }
+  return {
+    id: shortid.generate(),
+    type: 'text',
+    value: '',
+    children: [],
+    focus: true
+  }
+}
+
+const unfocusNode = (node) => {
+  node.focus = false
+  if (node.children && node.children.length !== 0) {
+    node.children.forEach((node) => {
+      return unfocusNode(node)
+    })
+  }
+  return node
 }
 
 const modify = (node, callback) => {
   const rootNode = getRootNode(node)
   const tree = getTree(rootNode)
+  //unfocusNode(tree)
   const { grandParent, parent, child } = searchTree(tree, node.state.id)
   callback(child, parent, grandParent)
   rootNode.setState(tree)
@@ -16,6 +33,7 @@ const modify = (node, callback) => {
 
 export const identify = (node) => {
   node.id = shortid.generate()
+  node.focus = false
   if (node.children && node.children.length !== 0) {
     node.children.forEach((node) => {
       return identify(node)
@@ -38,6 +56,12 @@ export const prepend = node => {
 
 export const remove = node => {
   modify(node, (child, parent) => {
+    let index = parent.children.indexOf(child)
+    if (index === 0) {
+      parent.focus = true
+    } else {
+      parent.children[index - 1].focus = true
+    }
     _.remove(parent.children, { id: child.id })
   })
 }

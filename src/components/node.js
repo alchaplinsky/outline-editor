@@ -13,12 +13,29 @@ export default class Node extends React.Component {
 
   constructor(props) {
     super(props)
-
+    this.contentEditable = React.createRef()
     this.state = {
       id: this.props.node.id,
       type: this.props.node.type,
       value: this.props.node.value,
+      focus: this.props.node.focus,
       children: this.props.node.children
+    }
+  }
+  componentDidMount() {
+    this.handleFocus()
+  }
+
+  componentDidUpdate() {
+    this.handleFocus()
+  }
+
+  handleFocus() {
+    if (this.props.node.focus) {
+      this.contentEditable.current.focus()
+      let range = this.contentEditable.current.createTextRange()
+      range.collapse(false)
+      range.select()
     }
   }
 
@@ -62,6 +79,7 @@ export default class Node extends React.Component {
     return (
       <div className="node">
         <ContentEditable
+          innerRef={this.contentEditable}
           className="node-self"
           html={this.state.value}
           onKeyDown={event => this.onKeyDown(event)}
