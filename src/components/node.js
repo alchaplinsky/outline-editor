@@ -3,10 +3,18 @@ import ContentEditable from 'react-contenteditable'
 import { nest, unnest, remove, append, prepend } from '../services/document'
 
 export default class Node extends React.Component {
+  keyMap = {
+    8: 'handleBackspaceKey',
+    9: 'handleTabKey',
+    13: 'handleEnterKey',
+    38: 'handleUpKey',
+    40: 'handleDownKey'
+  }
+
   constructor(props) {
     super(props)
+
     this.state = {
-      parent: this.props.parent,
       id: this.props.node.id,
       type: this.props.node.type,
       value: this.props.node.value,
@@ -18,33 +26,16 @@ export default class Node extends React.Component {
     this.setState({ value: event.target.value })
   }
 
-  onKeyDown(event, node) {
-    switch (event.keyCode) {
-      case 8:
-        this.handleBackspaceKey(event)
-        break;
-      case 9:
-        this.handleTabKey(event)
-        break;
-      case 13:
-        this.handleEnterKey(event)
-        break;
-      case 38:
-        this.handleUpKey(event)
-        break;
-      case 40:
-        this.handleDownKey(event)
-        break;
-      default:
-        break;
-    }
+  onKeyDown(event) {
+    let name = this.keyMap[event.keyCode]
+    if (name) return this[name](event)
   }
 
   handleUpKey() {}
   handleDownKey() {}
 
   handleBackspaceKey(event) {
-    if (this.state.value === '') {
+    if (this.state.value === '' && this.state.children.length === 0) {
       remove(this)
     }
   }

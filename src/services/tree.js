@@ -21,10 +21,8 @@ export const searchTree = (node, id) => {
 }
 
 const traverse = (parent, node, id) => {
-  let grandParent = parent
-  parent = node
   let child = find(node.children, { id: id })
-  if (child) return { grandParent, parent, child }
+  if (child) return { grandParent: parent, parent: node, child: child }
   let result, i
   for (i = 0; i < node.children.length; i++) {
     let child = node.children[i]
