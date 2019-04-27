@@ -23,7 +23,7 @@ code {
   padding-left: 25px;
 }
 .node.is-root > .node-self {
-  font-size: 20px;
+  font-size: 24px;
 }
 
 .node:not(.is-root):not(:last-child)::before {

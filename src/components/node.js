@@ -83,9 +83,16 @@ export default class Node extends React.Component {
     }
   }
 
+  classNames() {
+    let classname = 'node'
+    if (this.props.root)
+      classname = `${classname} is-root`
+    return classname
+  }
+
   render() {
     return (
-      <div className="node">
+      <div className={this.classNames()}>
         <ContentEditable
           innerRef={this.contentEditable}
           className="node-self"
