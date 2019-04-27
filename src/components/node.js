@@ -1,7 +1,6 @@
 import React from 'react'
 import ContentEditable from 'react-contenteditable'
-import shortid from 'shortid'
-import { clone, remove, findIndex } from 'lodash'
+import { nest, unnest, remove, append, prepend } from '../services/document'
 
 export default class Node extends React.Component {
   constructor(props) {
@@ -46,51 +45,26 @@ export default class Node extends React.Component {
 
   handleBackspaceKey(event) {
     if (this.state.value === '') {
-      let nodes = clone(this.props.parent.state.children)
-      remove(nodes, {id: this.state.id })
-      this.props.parent.setState({ children: nodes })
+      remove(this)
     }
   }
 
   handleEnterKey(event) {
     event.preventDefault()
     if (this.state.children.length === 0) {
-      let nodes = clone(this.props.parent.state.children)
-      let index = findIndex(nodes, { id: this.state.id })
-      nodes.splice(index + 1, 0, this.createNode())
-      this.props.parent.setState({ children: nodes })
+      append(this)
     } else {
-      let nodes = clone(this.state.children)
-      nodes.unshift(this.createNode())
-      this.setState({ children: nodes })
+      prepend(this)
     }
   }
 
   handleTabKey(event) {
     event.preventDefault()
     if (event.shiftKey) {
-      let parentState = this.props.parent.state
-      let grandParent = parentState.parent
-      let nodes = clone(grandParent.state.children)
-      let index = findIndex(nodes, { id: parentState.id })
-      nodes.splice(index + 1, 0, this.props.node)
-      grandParent.setState({ children: nodes })
-      let parentNodes = clone(parentState.children)
-      remove(parentNodes, {id: this.state.id })
-      this.props.parent.setState({ children: parentNodes })
+      unnest(this)
     } else {
-      let parentNodes = clone(this.props.parent.state.children)
-      let index = findIndex(parentNodes, { id: this.state.id })
-      if (index > 0) {
-        remove(parentNodes, { id: this.state.id })
-        parentNodes[index - 1].children.push(this.props.node)
-        this.props.parent.setState({ children: parentNodes })
-      }
+      nest(this)
     }
-  }
-
-  createNode() {
-    return { id: shortid.generate(), type: 'text', value: '', children: [] }
   }
 
   render() {
