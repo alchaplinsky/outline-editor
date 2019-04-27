@@ -10,13 +10,13 @@ export const getTree = node => {
   return clone(node.props.node)
 }
 
-export const searchTree = (node, id) => {
+export const searchTree = (child, id) => {
   let grandParent = null
   let parent = null
-  if (node.id === id) {
-    return { grandParent, parent, node }
+  if (child.id === id) {
+    return { grandParent, parent, child }
   } else {
-    return traverse(parent, node, id)
+    return traverse(parent, child, id)
   }
 }
 

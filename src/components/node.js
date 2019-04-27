@@ -1,6 +1,8 @@
 import React from 'react'
 import ContentEditable from 'react-contenteditable'
-import { nest, unnest, remove, append, prepend } from '../services/document'
+import {
+  nest, unnest, remove, append, prepend, goUp, goDown, update
+} from '../services/document'
 
 export default class Node extends React.Component {
   keyMap = {
@@ -22,6 +24,7 @@ export default class Node extends React.Component {
       children: this.props.node.children
     }
   }
+
   componentDidMount() {
     this.handleFocus()
   }
@@ -32,15 +35,14 @@ export default class Node extends React.Component {
 
   handleFocus() {
     if (this.props.node.focus) {
-      this.contentEditable.current.focus()
-      let range = this.contentEditable.current.createTextRange()
-      range.collapse(false)
-      range.select()
+      let element = this.contentEditable.current
+      element.focus()
     }
   }
 
   handleInput(event) {
     this.setState({ value: event.target.value })
+    update(this, event.target.value)
   }
 
   onKeyDown(event) {
@@ -48,11 +50,17 @@ export default class Node extends React.Component {
     if (name) return this[name](event)
   }
 
-  handleUpKey() {}
-  handleDownKey() {}
+  handleUpKey(event) {
+    goUp(this)
+  }
+
+  handleDownKey(event) {
+    goDown(this)
+  }
 
   handleBackspaceKey(event) {
     if (this.state.value === '' && this.state.children.length === 0) {
+      event.preventDefault()
       remove(this)
     }
   }

@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "caret-pos": "^1.2.1",
     "lodash": "^4.17.11",
     "react": "^16.8.6",
     "react-contenteditable": "^3.2.6",
