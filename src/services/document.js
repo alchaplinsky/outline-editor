@@ -26,7 +26,7 @@ const modify = (node, callback) => {
   const rootNode = getRootNode(node)
   const tree = getTree(rootNode)
   unfocusNode(tree)
-  const { grandParent, parent, child } = searchTree(tree, node.state.id)
+  const { grandParent, parent, child } = searchTree(tree, node.props.node.id)
   callback(child, parent, grandParent)
   rootNode.setState(tree)
 }
