@@ -1,6 +1,6 @@
 const shortid = jest.genMockFromModule('shortid')
 
-let i = 0
+let i = 6
 
 shortid.generate = () => {
   let id = `${i}${i}${i}${i}`

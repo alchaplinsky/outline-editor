@@ -2,24 +2,36 @@ import { getRootNode, getTree, searchTree } from './../tree.js'
 import tree from 'support/fixtures/tree'
 import Node from 'support/node'
 
-const rootNode = new Node(tree)
-const nodes = rootNode.getNodes()
-
-test('#getTree', () => {
+describe('#getTree', () => {
+  const rootNode = new Node(tree)
   const data = getTree(rootNode)
-  expect(data).not.toBe(rootNode.props.node)
-  expect(data).toMatchObject(tree)
+
+  test('tree should be clone of root node property', () => {
+    expect(data).not.toBe(rootNode.props.node)
+    expect(data).toMatchObject(tree)
+  })
 })
 
-test('#getRootNode', () => {
-  expect(getRootNode(nodes[2])).toBe(rootNode)
-  expect(getRootNode(nodes[5])).toBe(rootNode)
-  expect(getRootNode(nodes[3])).toBe(rootNode)
+describe('#getRootNode', () => {
+  const rootNode = new Node(tree)
+  const childNode1 = rootNode.children[1].children[0].children[0]
+  const childNode2 = rootNode.children[1].children[1]
+  const childNode3 = rootNode.children[2].children[0]
+
+  test('should find root from any node', () => {
+    expect(getRootNode(childNode1)).toBe(rootNode)
+    expect(getRootNode(childNode2)).toBe(rootNode)
+    expect(getRootNode(childNode2)).toBe(rootNode)
+  })
 })
 
-test('#searchTree', () => {
+describe('#searchTree', () => {
+  const rootNode = new Node(tree)
   const { grandParent, parent, child } = searchTree(rootNode.props.node, '1111')
-  expect(grandParent).toMatchObject(nodes[4].props.node)
-  expect(parent).toMatchObject(nodes[2].props.node)
-  expect(child).toMatchObject(nodes[1].props.node)
+
+  test('returns grand parent, parent and current node', () => {
+    expect(grandParent).toMatchObject(rootNode.children[1].props.node)
+    expect(parent).toMatchObject(rootNode.children[1].children[0].props.node)
+    expect(child).toMatchObject(rootNode.children[1].children[0].children[0].props.node)
+  })
 })
