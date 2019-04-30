@@ -1,39 +1,62 @@
-import _ from 'lodash'
+import { extend, remove as _remove } from 'lodash'
 import shortid from 'shortid'
-import { getRootNode, getTree, searchTree } from './tree'
+import { getDocument, getTree, searchTree } from './tree'
 
 const createNode = () => {
   return {
     id: shortid.generate(),
     type: 'text',
     value: '',
-    children: [],
-    focus: true
+    children: []
   }
-}
-
-const unfocusNode = node => {
-  node.focus = false
-  if (node.children && node.children.length !== 0) {
-    node.children.forEach((node) => {
-      return unfocusNode(node)
-    })
-  }
-  return node
 }
 
 const modify = (node, callback) => {
-  const rootNode = getRootNode(node)
-  const tree = getTree(rootNode)
-  unfocusNode(tree)
+  const document = getDocument(node)
+  const tree = getTree(node)
   const { grandParent, parent, child } = searchTree(tree, node.props.node.id)
-  callback(child, parent, grandParent)
-  rootNode.setState(tree)
+  const result = callback(child, parent, grandParent)
+  document.setState(extend({ node: tree }, result))
+}
+
+const getParent = node => {
+  return node.props.parent
+}
+
+const getChildren = node => {
+  return node.props.node.children
+}
+
+const getPrevSibling = node => {
+  let parent = getParent(node)
+  if (!parent) return null
+  let children = getChildren(parent)
+  return children[children.indexOf(node.props.node) - 1] || null
+}
+
+const getNextSiblingChild = node => {
+  let lastChild = node.children[node.children.length - 1]
+  if (lastChild.children.length > 0) {
+    return getNextSiblingChild(lastChild)
+  } else {
+    return lastChild
+  }
+}
+
+const getNextParentChild = node => {
+  let parent = getParent(node)
+  if (!parent) return null
+  let parentChildren = getChildren(parent)
+  let index = parentChildren.indexOf(node.props.node)
+  if (parentChildren[index + 1]) {
+    return parentChildren[index + 1]
+  } else {
+    return getNextParentChild(parent)
+  }
 }
 
 export const identify = node => {
   node.id = shortid.generate()
-  node.focus = false
   if (node.children && node.children.length !== 0) {
     node.children.forEach((node) => {
       return identify(node)
@@ -45,31 +68,32 @@ export const identify = node => {
 export const update = (node, value) => {
   modify(node, (child) => {
     child.value = value
-    child.focus = true
+    return { focusedNode: child.id }
   })
 }
 
 export const append = node => {
   modify(node, (child, parent) => {
-    parent.children.splice(parent.children.indexOf(child) + 1, 0, createNode())
+    let newNode = createNode()
+    parent.children.splice(parent.children.indexOf(child) + 1, 0, newNode)
+    return { focusedNode: newNode.id }
   })
 }
 
 export const prepend = node => {
   modify(node, (child) => {
-    child.children.unshift(createNode())
+    let newNode = createNode()
+    child.children.unshift(newNode)
+    return { focusedNode: newNode.id }
   })
 }
 
 export const remove = node => {
   modify(node, (child, parent) => {
     let index = parent.children.indexOf(child)
-    if (index === 0) {
-      parent.focus = true
-    } else {
-      parent.children[index - 1].focus = true
-    }
-    _.remove(parent.children, { id: child.id })
+    let nextNode = index === 0 ? parent : parent.children[index - 1]
+    _remove(parent.children, { id: child.id })
+    return { focusedNode: nextNode.id }
   })
 }
 
@@ -79,60 +103,51 @@ export const nest = node => {
     let siblings = parent.children
     let newParent = siblings[siblings.indexOf(child) - 1]
     if (!newParent) return
-    child.focus = true
     newParent.children.push(child)
-    _.remove(siblings, { id: child.id })
+    _remove(siblings, { id: child.id })
+    return { focusedNode: child.id }
   })
 }
 
 export const unnest = node => {
   modify(node, (child, parent, grandParent) => {
     if (parent && grandParent) {
-      _.remove(parent.children, { id: child.id })
+      _remove(parent.children, { id: child.id })
       let index = grandParent.children.indexOf(parent)
-      child.focus = true
       grandParent.children.splice(index + 1, 0, child)
+      return { focusedNode: child.id }
     }
   })
 }
 
 export const goUp = node => {
-  modify(node, (child, parent) => {
-    let index = parent.children.indexOf(child)
-    if (index === 0) {
-      parent.focus = true
-      return
-    }
-    let sibling = parent.children[index - 1]
+  let parent = getParent(node)
+
+  if (parent) {
+    let prevNode
+    let sibling = getPrevSibling(node)
     if (sibling) {
       if (sibling.children.length > 0) {
-        sibling.children[sibling.children.length - 1].focus = true
-        return
+        prevNode = getNextSiblingChild(sibling)
+      } else {
+        prevNode = sibling
       }
-      sibling.focus = true
+    } else {
+      prevNode = parent.props.node
     }
-  })
+    getDocument(node).setState({focusedNode: prevNode.id})
+  }
 }
 
 export const goDown = node => {
-  modify(node, (child, parent, grandParent) => {
-    if (child.children.length > 0) {
-      child.children[0].focus = true
-      return
-    }
-    let index = parent.children.indexOf(child)
-    let sibling = parent.children[index + 1]
-    if (sibling) {
-      sibling.focus = true
-      return
-    }
-    if (grandParent) {
-      let parentIndex = grandParent.children.indexOf(parent)
-      let parentSibling = grandParent.children[parentIndex + 1]
-      if (parentSibling) {
-        parentSibling.focus = true
-        return
-      }
-    }
-  })
+  let nextNode
+  let children = getChildren(node)
+  if (children.length > 0) {
+    nextNode = children[0]
+  } else {
+    nextNode = getNextParentChild(node)
+  }
+  if (nextNode) {
+    getDocument(node).setState({focusedNode: nextNode.id})
+  }
 }

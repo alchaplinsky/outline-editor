@@ -1,5 +1,6 @@
 import React from 'react'
 import ContentEditable from 'react-contenteditable'
+import { getDocument } from '../services/tree'
 import {
   nest, unnest, remove, append, prepend, goUp, goDown, update
 } from '../services/document'
@@ -16,13 +17,7 @@ export default class Node extends React.Component {
   constructor(props) {
     super(props)
     this.contentEditable = React.createRef()
-    this.state = {
-      id: this.props.node.id,
-      type: this.props.node.type,
-      value: this.props.node.value,
-      focus: this.props.node.focus,
-      children: this.props.node.children
-    }
+    this.state = this.props.node
   }
 
   componentDidMount() {
@@ -34,7 +29,7 @@ export default class Node extends React.Component {
   }
 
   handleFocus() {
-    if (this.props.node.focus) {
+    if (getDocument(this).state.focusedNode === this.state.id) {
       let element = this.contentEditable.current
       element.focus()
     }
@@ -83,16 +78,9 @@ export default class Node extends React.Component {
     }
   }
 
-  classNames() {
-    let classname = 'node'
-    if (this.props.root)
-      classname = `${classname} is-root`
-    return classname
-  }
-
   render() {
     return (
-      <div className={this.classNames()}>
+      <div className="node">
         <ContentEditable
           innerRef={this.contentEditable}
           className="node-self"

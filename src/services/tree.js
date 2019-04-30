@@ -6,8 +6,12 @@ export const getRootNode = node => {
   return getRootNode(parent)
 }
 
+export const getDocument = node => {
+  return getRootNode(node).props.document
+}
+
 export const getTree = node => {
-  return clone(node.props.node)
+  return clone(getDocument(node).state.node)
 }
 
 export const searchTree = (child, id) => {

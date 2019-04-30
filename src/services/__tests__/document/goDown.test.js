@@ -1,67 +1,46 @@
-import { getTree } from './../../tree'
 import { goDown } from './../../document'
+import Doc from 'support/components'
 
-import document from 'support/fixtures/identified_document'
-import Node from 'support/node'
+import json from 'support/fixtures/document'
 
 jest.mock('shortid')
 
 describe('#goDown', () => {
-  let data = JSON.parse(JSON.stringify(document))
-  let rootNode = new Node(data)
-  let node = rootNode.children[1]
-  node.props.node.focus = true
-  goDown(node)
-
   afterAll(() => {
     jest.restoreAllMocks()
   })
 
-  test('focuses node', () => {
-    expect(getTree(rootNode)).toMatchObject({
-      id: '0000',
-      type: 'text',
-      value: 'Getting started',
-      focus: false,
-      children: [
-        {
-          id: '1111',
-          type: 'text',
-          value: 'Hi there',
-          focus: false,
-          children: []
-        },
-        {
-          id: '2222',
-          type: 'text',
-          value: 'The Essentials List',
-          focus: false,
-          children: [
-            {
-              id: '3333',
-              type: 'text',
-              value: 'Outliner nested lists',
-              focus: true,
-              children: [
-                {
-                  id: '4444',
-                  type: 'text',
-                  value: 'Come back',
-                  focus: false,
-                  children: []
-                }
-              ]
-            },
-            {
-              id: '5555',
-              type: 'text',
-              value: 'Convert lists',
-              focus: false,
-              children: []
-            }
-          ]
-        }
-      ]
+  let buildDoc = () => {
+    return new Doc(JSON.parse(JSON.stringify(json)))
+  }
+
+  describe('node contains children', () => {
+    let doc = buildDoc()
+    let node = doc.node.children[1]
+
+    test('focuses first child', () => {
+      goDown(node)
+      expect(doc.state.focusedNode).toEqual('3333')
+    })
+  })
+
+  describe('node has no children', () => {
+    let doc = buildDoc()
+    let node = doc.node.children[0]
+
+    test('focuses next sibling', () => {
+      goDown(node)
+      expect(doc.state.focusedNode).toEqual('2222')
+    })
+  })
+
+  describe('node has no children and no siblings', () => {
+    let doc = buildDoc()
+    let node = doc.node.children[1].children[0].children[0]
+
+    test('focuses first sibling of closes parent with siblings', () => {
+      goDown(node)
+      expect(doc.state.focusedNode).toEqual('5555')
     })
   })
 })

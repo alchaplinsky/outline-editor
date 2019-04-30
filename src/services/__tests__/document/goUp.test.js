@@ -1,67 +1,47 @@
-import { getTree } from './../../tree'
 import { goUp } from './../../document'
+import Doc from 'support/components'
 
-import document from 'support/fixtures/identified_document'
-import Node from 'support/node'
+import json from 'support/fixtures/document'
 
 jest.mock('shortid')
 
 describe('#goUp', () => {
-  let data = JSON.parse(JSON.stringify(document))
-  let rootNode = new Node(data)
-  let node = rootNode.children[1].children[0].children[0]
-  node.props.node.focus = true
-  goUp(node)
-
   afterAll(() => {
     jest.restoreAllMocks()
   })
 
-  test('focuses node', () => {
-    expect(getTree(rootNode)).toMatchObject({
-      id: '0000',
-      type: 'text',
-      value: 'Getting started',
-      focus: false,
-      children: [
-        {
-          id: '1111',
-          type: 'text',
-          value: 'Hi there',
-          focus: false,
-          children: []
-        },
-        {
-          id: '2222',
-          type: 'text',
-          value: 'The Essentials List',
-          focus: false,
-          children: [
-            {
-              id: '3333',
-              type: 'text',
-              value: 'Outliner nested lists',
-              focus: true,
-              children: [
-                {
-                  id: '4444',
-                  type: 'text',
-                  value: 'Come back',
-                  focus: false,
-                  children: []
-                }
-              ]
-            },
-            {
-              id: '5555',
-              type: 'text',
-              value: 'Convert lists',
-              focus: false,
-              children: []
-            }
-          ]
-        }
-      ]
+  let buildDoc = () => {
+    return new Doc(JSON.parse(JSON.stringify(json)))
+  }
+
+  describe('previous sibling exists', () => {
+    let doc = buildDoc()
+    let node = doc.node.children[1]
+
+    test('focuses previous sibling', () => {
+      goUp(node)
+      expect(doc.state.focusedNode).toEqual('1111')
+    })
+  })
+
+  describe('no previous siblings', () => {
+    describe('no parent exists', () => {
+      let doc = buildDoc()
+
+      test('keeps focus on same node', () => {
+        goUp(doc.node)
+        expect(doc.state.focusedNode).toEqual('0000')
+      })
+    })
+
+    describe('parent exist', () => {
+      let doc = buildDoc()
+      let node = doc.node.children[1].children[0].children[0]
+
+      test('focuses parent node', () => {
+        goUp(node)
+        expect(doc.state.focusedNode).toEqual('3333')
+      })
     })
   })
 })
