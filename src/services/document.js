@@ -67,8 +67,9 @@ export const identify = node => {
 
 export const update = (node, value) => {
   modify(node, (child) => {
+    let caretPosition = node.getCaretPosition()
     child.value = value
-    return { focusedNode: child.id }
+    return { focusedNode: child.id, caretPosition: caretPosition }
   })
 }
 
@@ -76,7 +77,7 @@ export const append = node => {
   modify(node, (child, parent) => {
     let newNode = createNode()
     parent.children.splice(parent.children.indexOf(child) + 1, 0, newNode)
-    return { focusedNode: newNode.id }
+    return { focusedNode: newNode.id, caretPosition: 0 }
   })
 }
 
@@ -84,7 +85,7 @@ export const prepend = node => {
   modify(node, (child) => {
     let newNode = createNode()
     child.children.unshift(newNode)
-    return { focusedNode: newNode.id }
+    return { focusedNode: newNode.id, caretPosition: 0 }
   })
 }
 
@@ -93,36 +94,38 @@ export const remove = node => {
     let index = parent.children.indexOf(child)
     let nextNode = index === 0 ? parent : parent.children[index - 1]
     _remove(parent.children, { id: child.id })
-    return { focusedNode: nextNode.id }
+    return { focusedNode: nextNode.id, caretPosition: nextNode.value.length }
   })
 }
 
 export const nest = node => {
   modify(node, (child, parent) => {
+    let caretPosition = node.getCaretPosition()
     if (!parent) return
     let siblings = parent.children
     let newParent = siblings[siblings.indexOf(child) - 1]
     if (!newParent) return
     newParent.children.push(child)
     _remove(siblings, { id: child.id })
-    return { focusedNode: child.id }
+    return { focusedNode: child.id, caretPosition: caretPosition }
   })
 }
 
 export const unnest = node => {
   modify(node, (child, parent, grandParent) => {
+    let caretPosition = node.getCaretPosition()
     if (parent && grandParent) {
       _remove(parent.children, { id: child.id })
       let index = grandParent.children.indexOf(parent)
       grandParent.children.splice(index + 1, 0, child)
-      return { focusedNode: child.id }
+      return { focusedNode: child.id, caretPosition: caretPosition }
     }
   })
 }
 
 export const goUp = node => {
   let parent = getParent(node)
-
+  let caretPosition = node.getCaretPosition()
   if (parent) {
     let prevNode
     let sibling = getPrevSibling(node)
@@ -135,19 +138,26 @@ export const goUp = node => {
     } else {
       prevNode = parent.props.node
     }
-    getDocument(node).setState({focusedNode: prevNode.id})
+    getDocument(node).setState({
+      focusedNode: prevNode.id,
+      caretPosition: caretPosition
+    })
   }
 }
 
 export const goDown = node => {
   let nextNode
   let children = getChildren(node)
+  let caretPosition = node.getCaretPosition()
   if (children.length > 0) {
     nextNode = children[0]
   } else {
     nextNode = getNextParentChild(node)
   }
   if (nextNode) {
-    getDocument(node).setState({focusedNode: nextNode.id})
+    getDocument(node).setState({
+      focusedNode: nextNode.id,
+      caretPosition: caretPosition
+    })
   }
 }

@@ -1,6 +1,7 @@
 import React from 'react'
 import ContentEditable from 'react-contenteditable'
 import { getDocument } from '../services/tree'
+import { position } from 'caret-pos'
 import {
   nest, unnest, remove, append, prepend, goUp, goDown, update
 } from '../services/document'
@@ -28,10 +29,23 @@ export default class Node extends React.Component {
     this.handleFocus()
   }
 
+  getCaretPosition() {
+    return position(this.contentEditable.current).pos
+  }
+
   handleFocus() {
-    if (getDocument(this).state.focusedNode === this.state.id) {
+    let docState = getDocument(this).state
+    if (docState.focusedNode === this.state.id) {
       let element = this.contentEditable.current
-      element.focus()
+      if (this.state.value.length === 0) {
+        element.focus()
+      } else {
+        if (this.state.value.length < docState.caretPosition) {
+          position(element, this.state.value.length)
+        } else {
+          position(element, docState.caretPosition)
+        }
+      }
     }
   }
 
@@ -46,10 +60,12 @@ export default class Node extends React.Component {
   }
 
   handleUpKey(event) {
+    event.preventDefault()
     goUp(this)
   }
 
   handleDownKey(event) {
+    event.preventDefault()
     goDown(this)
   }
 

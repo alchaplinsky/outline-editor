@@ -22,6 +22,10 @@ class Node {
     this.props = { node: node, parent: parent, document: document }
   }
 
+  getCaretPosition() {
+    return 0
+  }
+
   setState() {
     return true
   }
