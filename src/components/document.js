@@ -1,6 +1,6 @@
 import React from 'react'
 import Node from './node'
-import { identify } from '../services/document'
+import { identify } from '../services/tree'
 
 export default class Document extends React.Component {
   constructor(props) {
@@ -10,6 +10,12 @@ export default class Document extends React.Component {
       focusedNode: null,
       caretPosition: null,
       node: identify(window.DOC)
+    }
+  }
+
+  onChange() {
+    if (this.props.onChange) {
+      this.props.onChange(this.state.node)
     }
   }
 

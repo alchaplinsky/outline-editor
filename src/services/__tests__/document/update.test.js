@@ -27,7 +27,7 @@ describe('#update', () => {
     })
   })
 
-  test('sets focus to newly created node', () => {
-    expect(doc.state.focusedNode).toEqual('4444')
+  test('sets focus to same node', () => {
+    expect(doc.state.focusedNode).toEqual('0000')
   })
 })

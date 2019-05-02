@@ -19,10 +19,14 @@ export default class Node extends React.Component {
     40: handleDownKey
   }
 
+  static getDerivedStateFromProps(props, state) {
+    return state !== props.node ? props.node : null
+  }
+
   constructor(props) {
     super(props)
-    this.contentEditable = React.createRef()
     this.state = this.props.node
+    this.contentEditable = React.createRef()
   }
 
   componentDidMount() {

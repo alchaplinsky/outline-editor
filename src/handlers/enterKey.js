@@ -1,10 +1,43 @@
-import { append, prepend } from '../services/document'
+import shortid from 'shortid'
+
+import { position } from 'caret-pos'
+import { updateDocument, getTree, searchTree } from './../services/tree'
 
 export const handleEnterKey = (event, node) => {
   event.preventDefault()
-  if (node.state.children.length === 0) {
-    append(node)
+  addNode(node, 'append')
+}
+
+const addNode = (node) => {
+  const { prevNodeValue, nextNodeValue } = splitValue(node)
+  const newNode = createNode(nextNodeValue)
+
+  const tree = getTree(node)
+  const { parent, child } = searchTree(tree, node.props.node.id)
+
+  if (node.props.node.children.length === 0) {
+    parent.children.splice(parent.children.indexOf(child) + 1, 0, newNode)
   } else {
-    prepend(node)
+    child.children.unshift(newNode)
+  }
+  child.value = prevNodeValue
+  updateDocument(node, { focusedNode: newNode.id, caretPosition: 0, node: tree })
+}
+
+const splitValue = (node) => {
+  let pos = position(node.contentEditable.current).pos
+  let value = node.state.value
+  return {
+    prevNodeValue: value.slice(0, pos),
+    nextNodeValue: value.slice(pos, value.length)
+  }
+}
+
+const createNode = value => {
+  return {
+    id: shortid.generate(),
+    type: 'text',
+    value: value,
+    children: []
   }
 }
