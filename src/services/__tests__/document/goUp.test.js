@@ -19,7 +19,7 @@ describe('#goUp', () => {
     let node = doc.node.children[1]
 
     test('focuses previous sibling', () => {
-      goUp(node)
+      goUp(node, 0)
       expect(doc.state.focusedNode).toEqual('1111')
     })
   })
@@ -29,7 +29,7 @@ describe('#goUp', () => {
       let doc = buildDoc()
 
       test('keeps focus on same node', () => {
-        goUp(doc.node)
+        goUp(doc.node, 0)
         expect(doc.state.focusedNode).toEqual('0000')
       })
     })
@@ -39,7 +39,7 @@ describe('#goUp', () => {
       let node = doc.node.children[1].children[0].children[0]
 
       test('focuses parent node', () => {
-        goUp(node)
+        goUp(node, 0)
         expect(doc.state.focusedNode).toEqual('3333')
       })
     })

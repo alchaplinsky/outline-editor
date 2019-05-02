@@ -123,9 +123,8 @@ export const unnest = node => {
   })
 }
 
-export const goUp = node => {
+export const goUp = (node, position) => {
   let parent = getParent(node)
-  let caretPosition = node.getCaretPosition()
   if (parent) {
     let prevNode
     let sibling = getPrevSibling(node)
@@ -140,15 +139,14 @@ export const goUp = node => {
     }
     getDocument(node).setState({
       focusedNode: prevNode.id,
-      caretPosition: caretPosition
+      caretPosition: position
     })
   }
 }
 
-export const goDown = node => {
+export const goDown = (node, position) => {
   let nextNode
   let children = getChildren(node)
-  let caretPosition = node.getCaretPosition()
   if (children.length > 0) {
     nextNode = children[0]
   } else {
@@ -157,7 +155,7 @@ export const goDown = node => {
   if (nextNode) {
     getDocument(node).setState({
       focusedNode: nextNode.id,
-      caretPosition: caretPosition
+      caretPosition: position
     })
   }
 }

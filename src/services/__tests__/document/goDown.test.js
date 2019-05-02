@@ -19,7 +19,7 @@ describe('#goDown', () => {
     let node = doc.node.children[1]
 
     test('focuses first child', () => {
-      goDown(node)
+      goDown(node, 0)
       expect(doc.state.focusedNode).toEqual('3333')
     })
   })
@@ -29,7 +29,7 @@ describe('#goDown', () => {
     let node = doc.node.children[0]
 
     test('focuses next sibling', () => {
-      goDown(node)
+      goDown(node, 0)
       expect(doc.state.focusedNode).toEqual('2222')
     })
   })
@@ -39,7 +39,7 @@ describe('#goDown', () => {
     let node = doc.node.children[1].children[0].children[0]
 
     test('focuses first sibling of closes parent with siblings', () => {
-      goDown(node)
+      goDown(node, 0)
       expect(doc.state.focusedNode).toEqual('5555')
     })
   })
