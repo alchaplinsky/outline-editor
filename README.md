@@ -1,11 +1,12 @@
 A React component for Outliner editor.
 
-*WARNING*: This package is still WIP
+**WARNING**: This package is still WIP
 
 ## Getting Started
 
 Clone repo: `git clone git@github.com:railsware/outliner.git`
-Install via npm: `yarn add file:[PATH_TO_OUTLINER]`.
+
+Install via yarn: `yarn add file:[PATH_TO_OUTLINER]`.
 
 Import from `@railsware/outliner`.
 
@@ -14,14 +15,14 @@ Import from `@railsware/outliner`.
 
 Example:
 
-```
+```javascript
 import Document from '@railsware/outliner';
 
 class MyComponent extends React.Component {
 
   constructor() {
-    super();
-    this.onChange = this.onChange.bind(this);
+    super()
+    this.onChange = this.onChange.bind(this)
   }
 
   state = {
@@ -35,11 +36,11 @@ class MyComponent extends React.Component {
   onChange(value) {
     this.setState({
       document
-    });
+    })
   }
 
   render() {
-    return <Document document={this.state.document} onChange={this.onChange} />;
+    return <Document document={this.state.document} onChange={this.onChange} />
   }
 }
 ```
