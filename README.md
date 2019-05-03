@@ -16,7 +16,8 @@ Import from `@railsware/outliner`.
 Example:
 
 ```javascript
-import Document from '@railsware/outliner';
+import Document from '@railsware/outliner'
+import '@railsware/outliner/src/css/index.css'
 
 class MyComponent extends React.Component {
 
