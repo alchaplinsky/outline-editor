@@ -6,11 +6,18 @@ export default class Document extends React.Component {
   constructor(props) {
     super(props)
 
+    const document = this.props.document || this.defaultDocument()
+    const node = identify(document)
+
     this.state = {
-      focusedNode: null,
-      caretPosition: null,
-      node: identify(this.props.document)
+      focusedNode: node.id,
+      caretPosition: node.value.length,
+      node: node
     }
+  }
+
+  defaultDocument() {
+    return { type: 'text', value: '', children: [] }
   }
 
   onChange() {
