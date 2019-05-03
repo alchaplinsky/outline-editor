@@ -1,0 +1,31 @@
+{
+  "name": "@railsware/outliner",
+  "version": "1.0.0",
+  "description": "Realtime outliner editor",
+  "main": "lib/index.js",
+  "author": "Alex Chaplinsky",
+  "license": "MIT",
+  "private": true,
+  "scripts": {
+    "test": "jest",
+    "build": "./node_modules/.bin/babel src --out-dir lib",
+    "watch": "./node_modules/.bin/babel src --watch --out-dir lib"
+  },
+  "dependencies": {
+    "caret-pos": "^1.2.1",
+    "lodash": "^4.17.11",
+    "react": "^16.8.6",
+    "react-contenteditable": "^3.2.6",
+    "react-dom": "^16.8.6",
+    "shortid": "^2.2.14"
+  },
+  "devDependencies": {
+    "@babel/cli": "^7.4.4",
+    "@babel/core": "^7.4.4",
+    "@babel/plugin-proposal-class-properties": "^7.4.4",
+    "@babel/preset-env": "^7.4.4",
+    "@babel/preset-react": "^7.0.0",
+    "babel-jest": "^24.7.1",
+    "jest": "^24.7.1"
+  }
+}
