@@ -3,7 +3,7 @@ import { remove } from 'lodash'
 import { updateDocument, getTree, searchTree } from './../helpers/tree'
 
 export const handleBackspaceKey = (event, node) => {
-  if ( node.state.children.length === 0) {
+  if (node.state.children.length === 0) {
     if (position(node.contentEditable.current).pos === 0) {
       event.preventDefault()
       removeNode(node)
@@ -42,6 +42,6 @@ const getLastChild = (node) => {
   if (node.children.length === 0) {
     return node
   } else {
-    return getLastChild(node.children[node.children.length -1])
+    return getLastChild(node.children[node.children.length - 1])
   }
 }

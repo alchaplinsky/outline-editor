@@ -23,7 +23,6 @@ export const updateDocument = (node, props) => {
   const document = getDocument(node)
   document.setState(props)
   document.onChange()
-  return
 }
 
 export const searchTree = (child, id) => {
