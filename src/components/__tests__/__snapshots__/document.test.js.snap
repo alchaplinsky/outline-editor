@@ -1,0 +1,214 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Document Document with document argument passed in should render document nodes 1`] = `
+<div
+  className="document"
+>
+  <Node
+    document={
+      Document {
+        "context": Object {},
+        "props": Object {
+          "document": Object {
+            "children": Array [
+              Object {
+                "children": Array [],
+                "id": "UNIQID",
+                "type": "text",
+                "value": "First Item",
+              },
+            ],
+            "id": "UNIQID",
+            "type": "text",
+            "value": "Document Title",
+          },
+        },
+        "refs": Object {},
+        "setState": [Function],
+        "state": Object {
+          "caretPosition": 14,
+          "focusedNode": "UNIQID",
+          "node": Object {
+            "children": Array [
+              Object {
+                "children": Array [],
+                "id": "UNIQID",
+                "type": "text",
+                "value": "First Item",
+              },
+            ],
+            "id": "UNIQID",
+            "type": "text",
+            "value": "Document Title",
+          },
+        },
+        "updater": Updater {
+          "_callbacks": Array [],
+          "_renderer": ReactShallowRenderer {
+            "_context": Object {},
+            "_didScheduleRenderPhaseUpdate": false,
+            "_dispatcher": Object {
+              "readContext": [Function],
+              "useCallback": [Function],
+              "useContext": [Function],
+              "useDebugValue": [Function],
+              "useEffect": [Function],
+              "useImperativeHandle": [Function],
+              "useLayoutEffect": [Function],
+              "useMemo": [Function],
+              "useReducer": [Function],
+              "useRef": [Function],
+              "useState": [Function],
+            },
+            "_element": <Document
+              document={
+                Object {
+                  "children": Array [
+                    Object {
+                      "children": Array [],
+                      "id": "UNIQID",
+                      "type": "text",
+                      "value": "First Item",
+                    },
+                  ],
+                  "id": "UNIQID",
+                  "type": "text",
+                  "value": "Document Title",
+                }
+              }
+            />,
+            "_firstWorkInProgressHook": null,
+            "_forcedUpdate": false,
+            "_instance": [Circular],
+            "_isReRender": false,
+            "_newState": null,
+            "_numberOfReRenders": 0,
+            "_renderPhaseUpdates": null,
+            "_rendered": <div
+              className="document"
+            >
+              <Node
+                document={[Circular]}
+                node={
+                  Object {
+                    "children": Array [
+                      Object {
+                        "children": Array [],
+                        "id": "UNIQID",
+                        "type": "text",
+                        "value": "First Item",
+                      },
+                    ],
+                    "id": "UNIQID",
+                    "type": "text",
+                    "value": "Document Title",
+                  }
+                }
+              />
+            </div>,
+            "_rendering": false,
+            "_updater": [Circular],
+            "_workInProgressHook": null,
+          },
+        },
+      }
+    }
+    node={
+      Object {
+        "children": Array [
+          Object {
+            "children": Array [],
+            "id": "UNIQID",
+            "type": "text",
+            "value": "First Item",
+          },
+        ],
+        "id": "UNIQID",
+        "type": "text",
+        "value": "Document Title",
+      }
+    }
+  />
+</div>
+`;
+
+exports[`Document Document with no arguments renders correctly with no arguments 1`] = `
+<div
+  className="document"
+>
+  <Node
+    document={
+      Document {
+        "context": Object {},
+        "props": Object {},
+        "refs": Object {},
+        "setState": [Function],
+        "state": Object {
+          "caretPosition": 0,
+          "focusedNode": "UNIQID",
+          "node": Object {
+            "children": Array [],
+            "id": "UNIQID",
+            "type": "text",
+            "value": "",
+          },
+        },
+        "updater": Updater {
+          "_callbacks": Array [],
+          "_renderer": ReactShallowRenderer {
+            "_context": Object {},
+            "_didScheduleRenderPhaseUpdate": false,
+            "_dispatcher": Object {
+              "readContext": [Function],
+              "useCallback": [Function],
+              "useContext": [Function],
+              "useDebugValue": [Function],
+              "useEffect": [Function],
+              "useImperativeHandle": [Function],
+              "useLayoutEffect": [Function],
+              "useMemo": [Function],
+              "useReducer": [Function],
+              "useRef": [Function],
+              "useState": [Function],
+            },
+            "_element": <Document />,
+            "_firstWorkInProgressHook": null,
+            "_forcedUpdate": false,
+            "_instance": [Circular],
+            "_isReRender": false,
+            "_newState": null,
+            "_numberOfReRenders": 0,
+            "_renderPhaseUpdates": null,
+            "_rendered": <div
+              className="document"
+            >
+              <Node
+                document={[Circular]}
+                node={
+                  Object {
+                    "children": Array [],
+                    "id": "UNIQID",
+                    "type": "text",
+                    "value": "",
+                  }
+                }
+              />
+            </div>,
+            "_rendering": false,
+            "_updater": [Circular],
+            "_workInProgressHook": null,
+          },
+        },
+      }
+    }
+    node={
+      Object {
+        "children": Array [],
+        "id": "UNIQID",
+        "type": "text",
+        "value": "",
+      }
+    }
+  />
+</div>
+`;

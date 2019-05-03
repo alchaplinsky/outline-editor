@@ -12,6 +12,14 @@
     "build": "babel src --out-dir lib",
     "watch": "babel src --watch --out-dir lib"
   },
+  "jest": {
+    "snapshotSerializers": [
+      "enzyme-to-json/serializer"
+    ],
+    "setupFiles": [
+      "./src/components/__test__/setupTests.js"
+    ]
+  },
   "dependencies": {
     "caret-pos": "^1.2.1",
     "lodash": "^4.17.11",
@@ -28,14 +36,19 @@
     "@babel/preset-react": "^7.0.0",
     "babel-eslint": "^10.0.1",
     "babel-jest": "^24.7.1",
+    "enzyme": "^3.9.0",
+    "enzyme-adapter-react-16": "^1.12.1",
+    "enzyme-to-json": "^3.3.5",
     "eslint": "^5.16.0",
     "eslint-config-standard": "^12.0.0",
     "eslint-plugin-babel": "^5.3.0",
     "eslint-plugin-import": "^2.17.2",
+    "eslint-plugin-jest": "^22.5.1",
     "eslint-plugin-node": "^9.0.0",
     "eslint-plugin-promise": "^4.1.1",
     "eslint-plugin-react": "^7.13.0",
     "eslint-plugin-standard": "^4.0.0",
-    "jest": "^24.7.1"
+    "jest": "^24.7.1",
+    "jest-enzyme": "^7.0.2"
   }
 }

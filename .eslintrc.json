@@ -1,7 +1,8 @@
 {
   "env": {
     "browser": true,
-    "es6": true
+    "es6": true,
+    "jest/globals": true
   },
   "extends": "standard",
   "globals": {
@@ -18,9 +19,11 @@
   },
   "plugins": [
     "react",
-    "babel"
+    "babel",
+    "jest"
   ],
   "rules": {
+    "react/jsx-uses-react": 1,
     "react/jsx-uses-vars": 1,
     "space-before-function-paren": ["error", "never"]
   }
