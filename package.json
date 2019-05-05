@@ -12,14 +12,6 @@
     "build": "babel src --out-dir lib",
     "watch": "babel src --watch --out-dir lib"
   },
-  "jest": {
-    "snapshotSerializers": [
-      "enzyme-to-json/serializer"
-    ],
-    "setupFiles": [
-      "./src/components/__test__/setupTests.js"
-    ]
-  },
   "dependencies": {
     "caret-pos": "^1.2.1",
     "lodash": "^4.17.11",
