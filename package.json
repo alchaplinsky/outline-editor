@@ -9,8 +9,8 @@
   "scripts": {
     "test": "jest",
     "lint": "eslint src",
-    "build": "babel src --out-dir lib",
-    "watch": "babel src --watch --out-dir lib"
+    "build": "babel src --out-dir lib --ignore **/__tests__,**/__mocks__",
+    "watch": "babel src --watch --out-dir lib --ignore **/__tests__,**/__mocks__"
   },
   "dependencies": {
     "caret-pos": "^1.2.1",
