@@ -3,12 +3,8 @@ import { getDocument, updateDocument, getTree, searchTree } from './../helpers/t
 export const handleInput = (event, node) => {
   const tree = getTree(node)
   const { child } = searchTree(tree, node.props.node.id)
+  child.value = event.target.value
 
   let caretPosition = node.getCaretPosition()
-  child.value = event.target.value
-  if (getDocument(node).state.focusedNode === child.id) {
-    updateDocument(node, { caretPosition: caretPosition, node: tree })
-  } else {
-    updateDocument(node, { node: tree })
-  }
+  updateDocument(node, { caretPosition: caretPosition, node: tree })
 }

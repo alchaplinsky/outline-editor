@@ -7,6 +7,7 @@ import { handleBackspaceKey } from '../handlers/backspaceKey'
 import { handleEnterKey } from '../handlers/enterKey'
 import { handleTabKey } from '../handlers/tabKey'
 import { handleInput } from '../handlers/input'
+import { handleFocus } from '../handlers/focus'
 import { applyFocus } from '../handlers/render'
 
 const LINE_HEIGHT = 24 // Replace with detected line-height
@@ -59,6 +60,7 @@ export default class Node extends React.Component {
           className="node-self"
           html={this.state.value}
           onKeyDown={event => this.onKeyDown(event)}
+          onFocus={event => handleFocus(event, this)}
           onChange={event => handleInput(event, this)}
         />
         {this.state.children.map((node, index) => {
