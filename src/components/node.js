@@ -10,8 +10,6 @@ import { handleInput } from '../handlers/input'
 import { handleFocus } from '../handlers/focus'
 import { applyFocus } from '../handlers/render'
 
-const LINE_HEIGHT = 24 // Replace with detected line-height
-
 export default class Node extends React.Component {
   keyMap = {
     8: handleBackspaceKey,
@@ -42,10 +40,6 @@ export default class Node extends React.Component {
   onKeyDown(event) {
     let handler = this.keyMap[event.keyCode]
     if (handler) return handler.call(this, event, this)
-  }
-
-  getLineHeight() {
-    return LINE_HEIGHT
   }
 
   getCaretPosition() {

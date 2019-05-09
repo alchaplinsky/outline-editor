@@ -19,10 +19,12 @@ export const getTree = node => {
   return clone(getDocument(node).state.node)
 }
 
-export const updateDocument = (node, props) => {
+export const updateDocument = (node, props, silent = false) => {
   const document = getDocument(node)
   document.setState(props)
-  document.onChange()
+  if (!silent) {
+    document.onChange()
+  }
 }
 
 export const searchTree = (child, id) => {

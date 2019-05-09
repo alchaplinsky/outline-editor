@@ -5,5 +5,5 @@ export const handleFocus = (event, node) => {
   updateDocument(node, {
     focusedNode: node.props.node.id,
     caretPosition: caretPosition
-  })
+  }, true)
 }

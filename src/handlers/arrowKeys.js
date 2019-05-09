@@ -1,6 +1,8 @@
 import { position } from 'caret-pos'
 import { updateDocument } from './../helpers/tree'
 
+const LINE_HEIGHT = 24 // Replace with detected line-height
+
 export const handleUpKey = (event, node) => {
   if (isOnFirstLine(event, node)) {
     event.preventDefault()
@@ -16,13 +18,13 @@ export const handleDownKey = (event, node) => {
 }
 
 const isOnFirstLine = (event, node) => {
-  return position(node.contentEditable.current).top <= node.getLineHeight()
+  return position(node.contentEditable.current).top <= LINE_HEIGHT
 }
 
 const isOnLastLine = (event, node) => {
   let height = node.contentEditable.current.clientHeight
   let top = position(node.contentEditable.current).top
-  return height - top <= node.getLineHeight()
+  return height - top <= LINE_HEIGHT
 }
 
 const goUp = (node, position) => {
@@ -44,7 +46,7 @@ const goUp = (node, position) => {
   updateDocument(node, {
     focusedNode: prevNode.id,
     caretPosition: position
-  })
+  }, true)
 }
 
 const goDown = (node, position) => {
@@ -60,7 +62,7 @@ const goDown = (node, position) => {
     updateDocument(node, {
       focusedNode: nextNode.id,
       caretPosition: position
-    })
+    }, true)
   }
 }
 
