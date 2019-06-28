@@ -2,7 +2,9 @@ import shortid from 'shortid'
 import { clone, find } from 'lodash'
 
 export const identify = node => {
-  node.id = shortid.generate()
+  if (!node.id) {
+    node.id = shortid.generate()
+  }
   if (node.children && node.children.length !== 0) {
     node.children.forEach((node) => {
       return identify(node)
@@ -21,10 +23,11 @@ export const getTree = node => {
 
 export const updateDocument = (node, props, silent = false) => {
   const document = getDocument(node)
-  document.setState(props)
-  if (!silent) {
-    document.onChange()
-  }
+  document.setState(props, () =>{
+    if (!silent) {
+      document.onChange()
+    }
+  })
 }
 
 export const searchTree = (child, id) => {
@@ -35,6 +38,10 @@ export const searchTree = (child, id) => {
   } else {
     return traverse(parent, child, id)
   }
+}
+
+export const isRoot = node => {
+  return getRootNode(node) === node
 }
 
 const getRootNode = node => {

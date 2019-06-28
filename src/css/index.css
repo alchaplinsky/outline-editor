@@ -9,48 +9,48 @@
 
 .node {
   position: relative;
-  padding-left: 25px;
-}
-.node.is-root > .node-self {
-  font-size: 24px;
-}
-
-.node:not(.is-root):not(:last-child)::before {
-  position: absolute;
-  content: '';
-  left: 5px;
-  display: block;
-  background: #ccc;
-  width: 1px;
-  height: 100%;
 }
 
 .node-self {
   position: relative;
-  margin-bottom: 10px;
+  z-index: 1;
   outline: none;
+  padding: 5px 5px 5px 25px;
+  transition: background .3s ease;
 }
 
-.node:not(.is-root) .node-self::before,
-.node:not(.is-root) .node-self::after {
-  display: block;
-  position: absolute;
-  content: '';
+.node-self:hover {
+  background: #f7f7f7;
 }
 
-.node-self::after {
-  background: #7a7a7a;
-  border-radius: 50%;
-  top: 8px;
-  left: -23px;
-  width: 7px;
-  height: 7px;
-}
-
-.node-self::before {
+.node-self:focus {
   background: #fff;
-  top: 0;
-  left: -30px;
-  width: 22px;
-  height: 22px;
+}
+
+.node input[type="checkbox"] {
+  position: absolute;
+  z-index: 5;
+  top: 7px;
+  left: 2px;
+}
+
+.node input[type="checkbox"]:checked + .node-self {
+  text-decoration: line-through;
+}
+
+.node.is-root {
+  margin-left: 0;
+}
+
+.node.is-root > .node .node {
+  margin-left: 25px;
+}
+
+.node.is-root > input[type="checkbox"] {
+  display: none;
+}
+
+.node.is-root > .node-self {
+  font-size: 24px;
+  padding-left: 0;
 }

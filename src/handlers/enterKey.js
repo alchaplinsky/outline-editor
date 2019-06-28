@@ -15,7 +15,7 @@ const addNode = (node) => {
   const tree = getTree(node)
   const { parent, child } = searchTree(tree, node.props.node.id)
 
-  if (node.props.node.children.length === 0) {
+  if (parent && node.props.node.children.length === 0) {
     parent.children.splice(parent.children.indexOf(child) + 1, 0, newNode)
   } else {
     child.children.unshift(newNode)

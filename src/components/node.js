@@ -2,6 +2,7 @@ import React from 'react'
 import ContentEditable from 'react-contenteditable'
 import { position } from 'caret-pos'
 
+import { isRoot } from '../helpers/tree'
 import { handleUpKey, handleDownKey } from '../handlers/arrowKeys'
 import { handleBackspaceKey } from '../handlers/backspaceKey'
 import { handleEnterKey } from '../handlers/enterKey'
@@ -46,9 +47,16 @@ export default class Node extends React.Component {
     return position(this.contentEditable.current).pos
   }
 
+  classNames() {
+    let classNames = ['node']
+    if (isRoot(this)) classNames.push('is-root')
+    return classNames.join(' ')
+  }
+
   render() {
     return (
-      <div className="node">
+      <div className={this.classNames()}>
+        <input type="checkbox" />
         <ContentEditable
           innerRef={this.contentEditable}
           className="node-self"
