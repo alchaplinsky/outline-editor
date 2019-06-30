@@ -9,6 +9,7 @@ import { handleEnterKey } from '../handlers/enterKey'
 import { handleTabKey } from '../handlers/tabKey'
 import { handleInput } from '../handlers/input'
 import { handleFocus } from '../handlers/focus'
+import { handleCheck } from '../handlers/checkbox'
 import { applyFocus } from '../handlers/render'
 
 export default class Node extends React.Component {
@@ -53,10 +54,19 @@ export default class Node extends React.Component {
     return classNames.join(' ')
   }
 
+  onCheck(event) {
+    this.setState({ completed: !this.state.completed })
+    handleCheck(event, this)
+  }
+
   render() {
     return (
       <div className={this.classNames()}>
-        <input type="checkbox" />
+        <input
+          type="checkbox"
+          checked={this.state.completed}
+          onChange={event => this.onCheck(event)}
+        />
         <ContentEditable
           innerRef={this.contentEditable}
           className="node-self"

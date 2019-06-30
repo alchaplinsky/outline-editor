@@ -38,6 +38,7 @@ const createNode = value => {
     id: shortid.generate(),
     type: 'text',
     value: value,
+    completed: false,
     children: []
   }
 }

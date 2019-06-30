@@ -17,7 +17,7 @@ export default class Document extends React.Component {
   }
 
   defaultDocument() {
-    return { type: 'text', value: '', children: [] }
+    return { type: 'text', value: '', children: [], completed: false }
   }
 
   onChange() {
