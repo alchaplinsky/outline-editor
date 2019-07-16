@@ -23,7 +23,7 @@ export const getTree = node => {
 
 export const updateDocument = (node, props, silent = false) => {
   const document = getDocument(node)
-  document.setState(props, () =>{
+  document.setState(props, () => {
     if (!silent) {
       document.onChange()
     }

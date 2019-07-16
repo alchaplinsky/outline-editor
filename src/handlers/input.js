@@ -1,4 +1,4 @@
-import { getDocument, updateDocument, getTree, searchTree } from './../helpers/tree'
+import { updateDocument, getTree, searchTree } from './../helpers/tree'
 
 export const handleInput = (event, node) => {
   const tree = getTree(node)
